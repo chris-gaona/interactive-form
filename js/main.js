@@ -162,15 +162,28 @@ $(function() {
     }
 
     //At least one activity must be checked from the list under "Register for Activities."
-    // if () {
-    //
-    // }
+    var oneIsChecked = false;
+    $('fieldset.activities input').each(function() {
+      if ($(this).is(':checked')) {
+        oneIsChecked = true;
+        return false;
+      }
+    });
+
+    if (oneIsChecked === true) {
+      $('fieldset.activities').find('span').removeClass('visible-block');
+    } else {
+      $('fieldset.activities').find('span').addClass('visible-block');
+    }
+
+    //Payment option must be selected.
+    
 
   });
 
 
 
-  //Payment option must be selected.
+
   //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
 
 });
