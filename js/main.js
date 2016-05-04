@@ -177,13 +177,15 @@ $(function() {
     }
 
     //Payment option must be selected.
+    if ($('select#payment').val() === 'select_method') {
+      $('select#payment').prev().prev().children().addClass('visible-block');
+    } else {
+      $('select#payment').prev().prev().children().removeClass('visible-block');
+    }
+
+    //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
     
 
   });
-
-
-
-
-  //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
 
 });
