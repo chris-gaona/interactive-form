@@ -111,6 +111,8 @@ $(function() {
   //When a user selects the "Credit Card" payment option, display the #credit-card div, and hide the "Paypal" and "Bitcoin information.
   //When a user selects the "PayPal" payment option, display the Paypal information, and hide the credit card information and the "Bitcoin" information.
   //When a user selects the "Bitcoin" payment option, display the Bitcoin information, and hide the credit card information.
+  $('#cvv').attr('maxlength', '3');
+
   $('select#payment').on('change', function() {
     var paymentOption = $(this).val();
 
@@ -184,19 +186,35 @@ $(function() {
     }
 
     //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
+    function validateZip(zip) {
+        var re = /^\d{5}(?:[-\s]\d{4})?$/;
+        return re.test(zip);
+    }
+
+    function validateCvv(cvv) {
+        var re = /^\d{3}/;
+        return re.test(cvv);
+    }
+
     if ($('select#payment').val() === 'credit card') {
       if ($('#cc-num').val() === '') {
         $('#cc-num').prev().css('color', 'red');
+      } else {
+        $('#cc-num').prev().css('color', '#000');
       }
 
-      if ($('#zip').val() === '') {
-        //add regex here
+      var zipInput = $('#zip').val();
+      if (zipInput === '' || validateZip(zipInput) === false) {
         $('#zip').prev().css('color', 'red');
+      } else {
+        $('#zip').prev().css('color', '#000');
       }
 
-      if ($('#cvv').val() === '') {
-        //add regex here
+      var cvvInput = $('#cvv').val();
+      if (cvvInput === '' || validateCvv(cvvInput) === false) {
         $('#cvv').prev().css('color', 'red');
+      } else {
+        $('#cvv').prev().css('color', '#000');
       }
     }
 
