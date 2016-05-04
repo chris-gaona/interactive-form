@@ -45,30 +45,58 @@ $(function() {
 
   $('fieldset.activities input').on('change', function() {
     var text = $(this).closest('label').text();
-    console.log(text);
-    var newString = text.split(' — ').pop();
-    console.log(newString);
-    var newerString = newString.split(',');
-    console.log('Newer string: ' + newerString[0]);
+    //splits the string at — & use pop to return the last
+    //portion of the string after —
+    var getDayDollar = text.split(' — ').pop();
+    //split returns an array with string before ',' as the first
+    //part of the array & the string after ',' as the second
+    //part of the array
+    var dayDollarArray = getDayDollar.split(',');
+    //create money variable
+    var money;
 
+    if (getDayDollar === '$200') {
+      money = getDayDollar.split('$');
+    } else {
+      money = dayDollarArray[1].split('$');
+    }
+
+    //When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
     if ($(this).is(':checked')) {
       $(this).parent('label').siblings().each(function() {
-        if ($(this).text().indexOf(newerString[0]) != -1) {
+        if ($(this).text().indexOf(dayDollarArray[0]) != -1) {
           $(this).css('opacity', '0.2');
           $(this).children('input').attr('disabled', true);
         }
       });
     } else {
       $(this).parent('label').siblings().each(function() {
-        if ($(this).text().indexOf(newerString[0]) != -1) {
+        if ($(this).text().indexOf(dayDollarArray[0]) != -1) {
           $(this).css('opacity', '1');
           $(this).children('input').attr('disabled', false);
         }
       });
     }
 
-  });
+    //As a user selects activities to register for, a running total is listed below the list of checkboxes. For example, if the user selects "Main conference" then Total: $200 should appear. If they add 1 workshop the total should change to Total: $300.
+    var amount = '<p id="total-dollars">Total: $' + money[1] + '</p>';
+    var initialAmount;
+    var newAmount;
 
-  //When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
+    if ($(this).is(':checked') && $('p#total-dollars').text().length === 0) {
+      $('fieldset.activities').after(amount);
+
+    } else if ($(this).is(':checked') && $('p#total-dollars').text().length != 0){
+      initialAmount = $('p#total-dollars').text().split('$');
+      newAmount = parseInt(initialAmount[1]) + parseInt(money[1]);
+      $('p#total-dollars').text('Total: $' + newAmount);
+
+    } else if (!$(this).is(':checked')) {
+      initialAmount = $('p#total-dollars').text().split('$');
+      newAmount = parseInt(initialAmount[1]) - parseInt(money[1]);
+      $('p#total-dollars').text('Total: $' + newAmount);
+    }
+
+  }); //on change()
 
 });
