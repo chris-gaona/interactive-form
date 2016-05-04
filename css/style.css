@@ -81,6 +81,35 @@ select {
 	margin-bottom: 1.125em;
 }
 
+.select-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  float: left;
+}
+
+select {
+  font-size: 1em;
+  background: #c1deeb;
+  padding: .8em 2.1em .8em .8em;
+	border: 2px solid #c1deeb;
+  border-radius: 0;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.select-container span.fa {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+}
+
+#exp-year {
+  margin-left: 1em;
+}
+
 input {
 	font-size: 1em;
 	font-weight: 500;
@@ -137,7 +166,7 @@ button:hover {
 
 .container {
 	margin: auto;
-	max-width: 680px;
+	max-width: 750px;
 }
 
 .shirt div {
@@ -150,6 +179,7 @@ button:hover {
 }
 
 .credit-card {
+  float: left;
 	margin-top: 1.25em;
 }
 
