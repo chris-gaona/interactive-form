@@ -72,7 +72,7 @@ legend {
 
 label {
 	color: #000;
-	display: inline-block;
+	display: block;
 	margin-bottom: .5em;
 }
 
@@ -119,6 +119,7 @@ button:hover {
 .error {
   color: red;
   display: none;
+  font-size: 16px;
 }
 
 .error.visible {
@@ -127,7 +128,7 @@ button:hover {
 
 .error.visible-block {
   display: block;
-  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 /* =================================

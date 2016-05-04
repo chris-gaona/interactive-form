@@ -142,7 +142,7 @@ $(function() {
     if ($('input#name').val() === '') {
       e.preventDefault();
 
-      $('input#name').prev().addClass('visible').prev().css('color', 'red');
+      $('input#name').prev().css('color', 'red').find('span').addClass('visible');
     }
 
     //Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example. You'll need to use a regular expression to get this requirement. See the list of Resources for links to learn about regular expressions.
@@ -151,17 +151,25 @@ $(function() {
     if (emailInput === '' || validateEmail(emailInput) === false) {
       e.preventDefault();
 
-      $('input#mail').prev().addClass('visible').prev().css('color', 'red');
+      $('input#mail').prev().css('color', 'red').find('span').addClass('visible');
     }
 
-    if () {
+    //make sure a shirt is picked --> design & color
+    if ($('select#design').val() === 'Select Theme') {
+      e.preventDefault();
 
+      $('fieldset.shirt').find('span').addClass('visible-block');
     }
+
+    //At least one activity must be checked from the list under "Register for Activities."
+    // if () {
+    //
+    // }
 
   });
 
 
-  //At least one activity must be checked from the list under "Register for Activities."
+
   //Payment option must be selected.
   //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
 
