@@ -15,15 +15,15 @@
       <h1>Full Stack Conf</h1>
     </header>
 
-    <form action="index.html" method="post">
+    <form action="index.html" method="post" novalidate>
 
       <fieldset id="main">
         <legend>Basic Info</legend>
 
-        <label for="name">Name:</label>
+        <label for="name">Name:</label> <span class="error">(Please enter your name)</span>
         <input type="text" id="name" name="user_name">
 
-        <label for="mail">Email:</label>
+        <label for="mail">Email:</label> <span class="error">(Please enter a valid email address)</span>
         <input type="email" id="mail" name="user_email">
 
         <label>Job Role</label>
@@ -39,6 +39,7 @@
 
       <fieldset class="shirt">
         <legend>T-Shirt Info</legend>
+        <span class="error visible-block">Don't forget to pick a T-shirt</span>
 
         <div>
           <label for="size">Size:</label>

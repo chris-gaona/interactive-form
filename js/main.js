@@ -97,6 +97,10 @@ $(function() {
       $('p#total-dollars').text('Total: $' + newAmount);
     }
 
+    if ($('p#total-dollars').text() === 'Total: $0') {
+      $('p#total-dollars').remove();
+    }
+
   }); //on change()
 
 
@@ -125,6 +129,40 @@ $(function() {
 
   });
 
-  
+
+  //Form validation. Display error messages and don't let the user submit the form if any of these validation errors exist:
+  //function to validate email input
+  function validateEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+  }
+
+  $('form').on('submit', function(e) {
+    //Name field can't be empty
+    if ($('input#name').val() === '') {
+      e.preventDefault();
+
+      $('input#name').prev().addClass('visible').prev().css('color', 'red');
+    }
+
+    //Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example. You'll need to use a regular expression to get this requirement. See the list of Resources for links to learn about regular expressions.
+    var emailInput = $('input#mail').val();
+
+    if (emailInput === '' || validateEmail(emailInput) === false) {
+      e.preventDefault();
+
+      $('input#mail').prev().addClass('visible').prev().css('color', 'red');
+    }
+
+    if () {
+
+    }
+
+  });
+
+
+  //At least one activity must be checked from the list under "Register for Activities."
+  //Payment option must be selected.
+  //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
 
 });
