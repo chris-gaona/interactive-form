@@ -99,4 +99,32 @@ $(function() {
 
   }); //on change()
 
+
+  //Payment Info section of the form. Display payment sections based on chosen payment option
+
+  $('#credit-card').hide().next('div').hide().next('div').hide();
+
+  //When a user selects the "Credit Card" payment option, display the #credit-card div, and hide the "Paypal" and "Bitcoin information.
+  //When a user selects the "PayPal" payment option, display the Paypal information, and hide the credit card information and the "Bitcoin" information.
+  //When a user selects the "Bitcoin" payment option, display the Bitcoin information, and hide the credit card information.
+  $('select#payment').on('change', function() {
+    var paymentOption = $(this).val();
+
+    if (paymentOption === 'credit card') {
+      $('#credit-card').show().next('div').hide().next('div').hide();;
+
+    } else if (paymentOption === 'paypal') {
+      $('#credit-card').hide().next('div').show().next('div').hide();
+
+    } else if (paymentOption === 'bitcoin') {
+      $('#credit-card').hide().next('div').hide().next('div').show();
+
+    } else if (paymentOption === 'select_method') {
+      $('#credit-card').hide().next('div').hide().next('div').hide();
+    }
+
+  });
+
+  
+
 });
