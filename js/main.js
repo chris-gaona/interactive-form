@@ -184,7 +184,21 @@ $(function() {
     }
 
     //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
-    
+    if ($('select#payment').val() === 'credit card') {
+      if ($('#cc-num').val() === '') {
+        $('#cc-num').prev().css('color', 'red');
+      }
+
+      if ($('#zip').val() === '') {
+        //add regex here
+        $('#zip').prev().css('color', 'red');
+      }
+
+      if ($('#cvv').val() === '') {
+        //add regex here
+        $('#cvv').prev().css('color', 'red');
+      }
+    }
 
   });
 
