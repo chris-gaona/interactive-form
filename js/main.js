@@ -93,14 +93,14 @@ $(function() {
   //Register for Activities section of the form.
   //////////////////////////////
 
-  //define variables for this section
-  var text,
-      getDayDollar,
-      dayDollarArray,
-      money;
-
   //activities select field on change
   $('fieldset.activities input').on('change', function() {
+    //define variables for this section
+    var text,
+        getDayDollar,
+        dayDollarArray,
+        money;
+
     //text variable holds current option's closest label text
     text = $(this).closest('label').text();
     //getDayDollar variable holds the split of the string at — & uses pop
@@ -257,65 +257,104 @@ $(function() {
   //////////////////////////////
   //Form Validation section of the form.
   //////////////////////////////
-  
+
   //Form validation. Display error messages and don't let the user submit the form if any of these validation errors exist:
-  //function to validate email input
+  //function to validate email input...passes in email to test
   function validateEmail(email) {
-      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
+    //defines regex variable to hold regular expression to test emails
+    var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //return true or false depending on whether the email value passes
+    //the test based on the regular expression
+    return regex.test(email);
   }
 
+  //on sumbit of the form...
   $('form').on('submit', function(e) {
-    //Name field can't be empty
-    if ($('input#name').val() === '') {
+    //define variables
+    var nameInput = $('input#name'),
+        emailInput = $('input#mail'),
+        emailInputValue = $('input#mail').val();
+
+    //name field can't be empty
+    if (nameInput.val() === '') {
+      //prevents default behavior of submit button...used multiple times below
       e.preventDefault();
 
-      $('input#name').prev().css('color', 'red').find('span').addClass('visible');
+      //adds visible error to user
+      nameInput.prev().css('color', 'red').find('span').addClass('visible');
+
+    } else {
+      //adds visible error to user
+      nameInput.prev().css('color', '#000').find('span').removeClass('visible');
     }
 
     //Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example. You'll need to use a regular expression to get this requirement. See the list of Resources for links to learn about regular expressions.
-    var emailInput = $('input#mail').val();
 
-    if (emailInput === '' || validateEmail(emailInput) === false) {
+    //if email input is empty or validateEmail function returns false
+    if (emailInputValue === '' || validateEmail(emailInputValue) === false) {
       e.preventDefault();
 
-      $('input#mail').prev().css('color', 'red').find('span').addClass('visible');
+      //adds visible error to user
+      emailInput.prev().css('color', 'red').find('span').addClass('visible');
+
+    } else {
+      //removes visible error to user
+      emailInput.prev().css('color', '#000').find('span').removeClass('visible');
     }
 
-    //make sure a shirt is picked --> design & color
+    //makes sure a shirt is picked
     if ($('select#design').val() === 'Select Theme') {
       e.preventDefault();
 
+      //adds visible error to user
       $('fieldset.shirt').find('span').addClass('visible-block');
+
+    } else {
+      //removes visible error to user
+      $('fieldset.shirt').find('span').removeClass('visible-block');
     }
 
-    //At least one activity must be checked from the list under "Register for Activities."
+    //validates that at least one activity is checked
     var oneIsChecked = false;
+    //iterate through each activity checkbox
     $('fieldset.activities input').each(function() {
+      //if one is checked change oneIsChecked to true
       if ($(this).is(':checked')) {
         oneIsChecked = true;
+        //return false to break the loop
         return false;
       }
     });
 
+    //if one checkbox is checked
     if (oneIsChecked === true) {
+      //remove error message & allow user to submit
       $('fieldset.activities').find('span').removeClass('visible-block');
+
     } else {
+      //prevent user from submitting the form
       e.preventDefault();
 
+      //add error message for user
       $('fieldset.activities').find('span').addClass('visible-block');
     }
 
-    //Payment option must be selected.
+    //if no payment method is selected
     if ($('select#payment').val() === 'select_method') {
       e.preventDefault();
 
+      //add error message for user
       $('select#payment').prev().prev().children().addClass('visible-block');
+
     } else {
+      //remove error message for user
       $('select#payment').prev().prev().children().removeClass('visible-block');
     }
 
-    //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
+
+    //////////////////////////////
+    //Credit Card Form Validation section of the form.
+    //////////////////////////////
 
     //Extra Credit: Validate the credit card number so that it's a validly formatted credit card number. (see the Resources links for information on how to do this.)
 
@@ -379,42 +418,78 @@ $(function() {
       return (check % 10) === 0;
     }
 
+    //validates zip code
     function validateZip(zip) {
-        var re = /^\d{5}(?:[-\s]\d{4})?$/;
-        return re.test(zip);
+      //defines regular expression
+      //^ start of string
+      //must be a digit & cannot be more than 5
+      //(?: starts a grouping
+      //[-\s] matches a hyphen or a space
+      //must be more digits & cannot be more than 4
+      //everything between both '?' is optional
+      //$ end of string
+      var regex = /^\d{5}(?:[-\s]\d{4})?$/;
+      //returns true or false depending on if the string passes
+      //the regular expression test
+      return regex.test(zip);
     }
 
+    //validates CVV
     function validateCvv(cvv) {
-        var re = /^\d{3}/;
-        return re.test(cvv);
+      //defines regular expression
+      //^ start of string
+      //must be digit & cannot be more than 3 digits
+      //$ end of string
+      var regex = /^\d{3}$/;
+      //returns true or false depending on if the string passes
+      //the regular expression test
+      return regex.test(cvv);
     }
 
+    //define variables
+    var creditCardInput = $('#cc-num'),
+        creditCardValue = creditCardInput.val(),
+        zipInput = $('#zip'),
+        zipValue = zipInput.val(),
+        cvvInput = $('#cvv'),
+        cvvValue = cvvInput.val();
+
+    //if payment select option equals 'credit card'
     if ($('select#payment').val() === 'credit card') {
-      var creditCardInput = $('#cc-num').val();
-      if (creditCardInput === '' || validateCreditCard(creditCardInput) === false) {
+      //if creditCardValue is empty or validateCreditCard returns false
+      if (creditCardValue === '' || validateCreditCard(creditCardValue) === false) {
         e.preventDefault();
 
-        $('#cc-num').prev().css('color', 'red');
+        //add visible error for user
+        creditCardInput.prev().css('color', 'red');
+
       } else {
-        $('#cc-num').prev().css('color', '#000');
+        //remove visible error for user
+        creditCardInput.prev().css('color', '#000');
       }
 
-      var zipInput = $('#zip').val();
-      if (zipInput === '' || validateZip(zipInput) === false) {
+      //if zipValue is empty or validateZip return false
+      if (zipValue === '' || validateZip(zipValue) === false) {
         e.preventDefault();
 
-        $('#zip').prev().css('color', 'red');
+        //add visible error for user
+        zipInput.prev().css('color', 'red');
+
       } else {
-        $('#zip').prev().css('color', '#000');
+        //remove visible error for user
+        zipInput.prev().css('color', '#000');
       }
 
-      var cvvInput = $('#cvv').val();
-      if (cvvInput === '' || validateCvv(cvvInput) === false) {
+      //if cvvValue is empty or validateCvv return false
+      if (cvvValue === '' || validateCvv(cvvValue) === false) {
         e.preventDefault();
 
-        $('#cvv').prev().css('color', 'red');
+        //add visible error for user
+        cvvInput.prev().css('color', 'red');
+
       } else {
-        $('#cvv').prev().css('color', '#000');
+        //remove visible error for user
+        cvvInput.prev().css('color', '#000');
       }
     }
 
