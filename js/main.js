@@ -92,12 +92,12 @@ $(function() {
 
     } else if ($(this).is(':checked') && $('p#total-dollars').text().length !== 0){
       initialAmount = $('p#total-dollars').text().split('$');
-      newAmount = parseInt(initialAmount[1]) + parseInt(money[1]);
+      newAmount = parseInt(initialAmount[1], 10) + parseInt(money[1], 10);
       $('p#total-dollars').text('Total: $' + newAmount);
 
     } else if (!$(this).is(':checked')) {
       initialAmount = $('p#total-dollars').text().split('$');
-      newAmount = parseInt(initialAmount[1]) - parseInt(money[1]);
+      newAmount = parseInt(initialAmount[1], 10) - parseInt(money[1], 10);
       $('p#total-dollars').text('Total: $' + newAmount);
     }
 
@@ -190,6 +190,66 @@ $(function() {
     }
 
     //If "Credit card" is the selected payment option, make sure the user supplied a credit card number, a zip code, and a 3 number CVV value.
+
+    //Extra Credit: Validate the credit card number so that it's a validly formatted credit card number. (see the Resources links for information on how to do this.)
+
+    //creates validateCreditCard function & passes in value
+    function validateCreditCard(value) {
+      // accept only digits, dashes or spaces
+      //[ start of a character set
+      //^ start of string
+      //will accept digits only \d
+      //will accept a - after the digits
+      //or a \s (space)
+      //will accept preceding expression multiple times +
+      if (/[\D-\s]+/.test(value)) {
+        //return false to prevent anything else in this
+        //function from occurring if test is false
+        return false;
+      }
+
+      //Luhn Algorithm:
+      //define variables
+      var nCheck = 0;
+      var nDigit = 0;
+      var bEven = false;
+
+      //for loop defines n variable to equal value.length - 1
+      //the -1 drops the last digit
+      //as long as n is greater than or equal to 0 keep looping
+      //n-- loops backwards
+      for(var n = value.length - 1; n >= 0; n--) {
+        //cDigit variable holds value and returns
+        //each digit in the string in reverse order
+        var cDigit = value.charAt(n);
+        //nDigit variables holds the result of parsing cDigit
+        //specifying 10 as the radix (10 is the decimal numeral
+        //system commonly used by humans)
+        nDigit = parseInt(cDigit, 10);
+
+        //if bEven exists...it's initially false
+        if (bEven) {
+          //times each nDigit by 2 and checks to see if it
+          //is greater than 9
+          if ((nDigit *= 2) > 9) {
+            //minus 9 to every digit that is greater than 9
+            nDigit -= 9;
+          }
+        }
+
+        //add nDigit to nCheck, which adds all the digits
+        //together
+        nCheck += nDigit;
+        //changes bEven to true if it's false or false if
+        //it's true
+        bEven = !bEven;
+      }
+
+      //nCheck divided by 10 and return the remainder
+      //if it equals 0 it's true else it's false
+      return (nCheck % 10) == 0;
+    }
+
     function validateZip(zip) {
         var re = /^\d{5}(?:[-\s]\d{4})?$/;
         return re.test(zip);
@@ -201,7 +261,9 @@ $(function() {
     }
 
     if ($('select#payment').val() === 'credit card') {
-      if ($('#cc-num').val() === '') {
+      var creditCardInput = $('#cc-num').val();
+      console.log(validateCreditCard(creditCardInput));
+      if (creditCardInput === '' || validateCreditCard(creditCardInput) === false) {
         $('#cc-num').prev().css('color', 'red');
       } else {
         $('#cc-num').prev().css('color', '#000');
@@ -223,11 +285,5 @@ $(function() {
     }
 
   });
-
-
-  //Style the "select" menus (drop down menus) on the form, so they match the styling of the text fields (see Resources links for an article on how to improve the look of select menus using CSS and JavaScript).
-
-
-  //Validate the credit card number so that it's a validly formatted credit card number. (see the Resources links for information on how to do this.)
 
 });
