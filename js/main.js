@@ -4,52 +4,89 @@ $(function() {
   //Set focus on the first text field on page load
   $('input#name').focus();
 
-  //Job Role section of the form. Reveal a text field when the "Other" option is selected from the "Job Role" drop down menu
+
+  ///////////////////////////////
+  //Job Role section of the form.
+  ///////////////////////////////
+
+  //otherInput variable holds the input for when other is
+  //selected
   var otherInput = '<input type="text" id="other-title" placeholder="Your Title">';
 
+  //job role select on change
   $('select#title').on('change', function() {
+    //otherOption variable holds the current options value
     var otherOption = $(this).val();
 
+    //if otherOption equals other do the following...
     if (otherOption === 'other') {
+      //append the new input field
       $('fieldset#main').append(otherInput);
 
     } else {
+      //else find id of new input field and remove it
       $('fieldset#main').find('#other-title').remove();
     }
-  });
+  }); //on change()
 
-  //T-Shirt Info section of the form. For the T-Shirt color menu, only display the options that match the design selected in the "Design" menu.
 
-  //Extra Credit: Hide the "Color" label and select menu until a T-Shirt design is selected from the "Design" menu.
+  ///////////////////////////////
+  //T-Shirt Info section of the form.
+  ///////////////////////////////
+
+  //intially hides the color select field
   $('#colors-js-puns').hide();
+  //optionsArray variable holds color options & converts
+  //it to an array
   var optionsArray = $('#color option').toArray();
 
+  //intialOption variable holds the intial option...not really //needed anymore since I'm hiding the colors select field
+  //on page load
   var intialOption = '<option><-- Please select a T-shirt theme</option>';
+  //on page load empty the colors select field & append
+  //the intialOption
   $('select#color').empty().append(intialOption);
 
+  //theme select field on change
   $('select#design').on('change', function() {
+    //designOption variable holds the current options value
     var designOption = $(this).val();
 
+    //if designOption is equal to 'js puns' do the following...
     if (designOption === 'js puns') {
+      //show colors select field
       $('#colors-js-puns').show();
+      //empty color select field & append first 3 array items
       $('select#color').empty().append(optionsArray[0]).append(optionsArray[1]).append(optionsArray[2]);
 
+    //else if designOption is equal to 'heart js' do the
+    //following...
     } else if (designOption === 'heart js') {
+      //show colors select field
       $('#colors-js-puns').show();
+      //empty color select field & append last 3 array items
       $('select#color').empty().append(optionsArray[3]).append(optionsArray[4]).append(optionsArray[5]);
 
     } else {
+      //else empty color select field & append intialOption...
+      //not really needed because I'm hiding color select field
       $('select#color').empty().append(intialOption);
+
+      //hide color select field
       $('#colors-js-puns').hide();
     }
-  });
+  }); //on change()
 
+  //////////////////////////////
   //Register for Activities section of the form.
+  //////////////////////////////
 
   //Some events are at the same time as others. If the user selects a workshop, don't allow selection of a workshop at the same date and time -- you should disable the checkbox and visually indicate that the workshop in the competing time slot isn't available.
+  //activities select field on change
   $('fieldset.activities input').on('change', function() {
+    //text variable holds current option's closest label text
     var text = $(this).closest('label').text();
-    //splits the string at — & use pop to return the last
+    //splits the string at — & uses pop to return the last
     //portion of the string after —
     var getDayDollar = text.split(' — ').pop();
     //split returns an array with string before ',' as the first
@@ -59,9 +96,14 @@ $(function() {
     //create money variable
     var money;
 
+    //if getDayDollar is equal to $200
     if (getDayDollar === '$200') {
+      //money equals getDayDollar and splits the 200 from the
+      //$ sign
       money = getDayDollar.split('$');
     } else {
+      //else money equals second item in dayDollarArray & splits
+      //dollar amount from $ sign
       money = dayDollarArray[1].split('$');
     }
 
@@ -180,7 +222,7 @@ $(function() {
       $('fieldset.activities').find('span').removeClass('visible-block');
     } else {
       e.preventDefault();
-      
+
       $('fieldset.activities').find('span').addClass('visible-block');
     }
 
