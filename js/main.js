@@ -179,11 +179,15 @@ $(function() {
     if (oneIsChecked === true) {
       $('fieldset.activities').find('span').removeClass('visible-block');
     } else {
+      e.preventDefault();
+      
       $('fieldset.activities').find('span').addClass('visible-block');
     }
 
     //Payment option must be selected.
     if ($('select#payment').val() === 'select_method') {
+      e.preventDefault();
+
       $('select#payment').prev().prev().children().addClass('visible-block');
     } else {
       $('select#payment').prev().prev().children().removeClass('visible-block');
@@ -265,8 +269,9 @@ $(function() {
 
     if ($('select#payment').val() === 'credit card') {
       var creditCardInput = $('#cc-num').val();
-      console.log(validateCreditCard(creditCardInput));
       if (creditCardInput === '' || validateCreditCard(creditCardInput) === false) {
+        e.preventDefault();
+
         $('#cc-num').prev().css('color', 'red');
       } else {
         $('#cc-num').prev().css('color', '#000');
@@ -274,6 +279,8 @@ $(function() {
 
       var zipInput = $('#zip').val();
       if (zipInput === '' || validateZip(zipInput) === false) {
+        e.preventDefault();
+
         $('#zip').prev().css('color', 'red');
       } else {
         $('#zip').prev().css('color', '#000');
@@ -281,6 +288,8 @@ $(function() {
 
       var cvvInput = $('#cvv').val();
       if (cvvInput === '' || validateCvv(cvvInput) === false) {
+        e.preventDefault();
+
         $('#cvv').prev().css('color', 'red');
       } else {
         $('#cvv').prev().css('color', '#000');
