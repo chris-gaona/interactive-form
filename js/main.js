@@ -210,9 +210,9 @@ $(function() {
 
       //Luhn Algorithm:
       //define variables
-      var nCheck = 0;
-      var nDigit = 0;
-      var bEven = false;
+      var check = 0;
+      var digits = 0;
+      var oddNumber = false;
 
       //for loop defines n variable to equal value.length - 1
       //the -1 drops the last digit
@@ -221,33 +221,36 @@ $(function() {
       for(var n = value.length - 1; n >= 0; n--) {
         //cDigit variable holds value and returns
         //each digit in the string in reverse order
-        var cDigit = value.charAt(n);
+        var reverseDigits = value.charAt(n);
         //nDigit variables holds the result of parsing cDigit
         //specifying 10 as the radix (10 is the decimal numeral
         //system commonly used by humans)
-        nDigit = parseInt(cDigit, 10);
+        digits = parseInt(reverseDigits, 10);
 
-        //if bEven exists...it's initially false
-        if (bEven) {
+        //if oddNumber is true do the following
+        if (oddNumber) {
           //times each nDigit by 2 and checks to see if it
           //is greater than 9
-          if ((nDigit *= 2) > 9) {
+          if ((digits *= 2) > 9) {
             //minus 9 to every digit that is greater than 9
-            nDigit -= 9;
+            digits -= 9;
           }
         }
 
-        //add nDigit to nCheck, which adds all the digits
+        //add nDigit to check, which adds all the digits
         //together
-        nCheck += nDigit;
-        //changes bEven to true if it's false or false if
-        //it's true
-        bEven = !bEven;
-      }
+        check += digits;
+        //changes even to true if it's false or false if
+        //it's true...this flips it so that it only does
+        //the previous on odd numbered digits
+        oddNumber = !oddNumber;
+      } //end of for loop
 
-      //nCheck divided by 10 and return the remainder
+      //check divided by 10 and return the remainder
       //if it equals 0 it's true else it's false
-      return (nCheck % 10) == 0;
+      //the amount that you would need to add to get
+      //a multiple of 10
+      return (check % 10) == 0;
     }
 
     function validateZip(zip) {
