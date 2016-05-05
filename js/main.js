@@ -9,23 +9,27 @@ $(function() {
   //Job Role section of the form.
   ///////////////////////////////
 
+  //define variables for this section
+  var otherInput,
+      otherOption,
+      fieldsetMain = $('fieldset#main');
   //otherInput variable holds the input for when other is
   //selected
-  var otherInput = '<input type="text" id="other-title" placeholder="Your Title">';
+  otherInput = '<input type="text" id="other-title" placeholder="Your Title">';
 
   //job role select on change
   $('select#title').on('change', function() {
     //otherOption variable holds the current options value
-    var otherOption = $(this).val();
+    otherOption = $(this).val();
 
     //if otherOption equals other do the following...
     if (otherOption === 'other') {
       //append the new input field
-      $('fieldset#main').append(otherInput);
+      fieldsetMain.append(otherInput);
 
     } else {
       //else find id of new input field and remove it
-      $('fieldset#main').find('#other-title').remove();
+      fieldsetMain.find('#other-title').remove();
     }
   }); //on change()
 
@@ -34,98 +38,127 @@ $(function() {
   //T-Shirt Info section of the form.
   ///////////////////////////////
 
+  //define variables for this section
+  var colorContainer = $('#colors-js-puns'),
+      selectColor = $('select#color'),
+      optionsArray,
+      intialOption,
+      designOption;
+
   //intially hides the color select field
-  $('#colors-js-puns').hide();
+  colorContainer.hide();
   //optionsArray variable holds color options & converts
   //it to an array
-  var optionsArray = $('#color option').toArray();
+  optionsArray = $('#color option').toArray();
 
   //intialOption variable holds the intial option...not really //needed anymore since I'm hiding the colors select field
   //on page load
-  var intialOption = '<option><-- Please select a T-shirt theme</option>';
+  intialOption = '<option><-- Please select a T-shirt theme</option>';
   //on page load empty the colors select field & append
   //the intialOption
-  $('select#color').empty().append(intialOption);
+  selectColor.empty().append(intialOption);
 
   //theme select field on change
   $('select#design').on('change', function() {
     //designOption variable holds the current options value
-    var designOption = $(this).val();
+    designOption = $(this).val();
 
     //if designOption is equal to 'js puns' do the following...
     if (designOption === 'js puns') {
       //show colors select field
-      $('#colors-js-puns').show();
+      colorContainer.show();
       //empty color select field & append first 3 array items
-      $('select#color').empty().append(optionsArray[0]).append(optionsArray[1]).append(optionsArray[2]);
+      selectColor.empty().append(optionsArray[0]).append(optionsArray[1]).append(optionsArray[2]);
 
     //else if designOption is equal to 'heart js' do the
     //following...
     } else if (designOption === 'heart js') {
       //show colors select field
-      $('#colors-js-puns').show();
+      colorContainer.show();
       //empty color select field & append last 3 array items
-      $('select#color').empty().append(optionsArray[3]).append(optionsArray[4]).append(optionsArray[5]);
+      selectColor.empty().append(optionsArray[3]).append(optionsArray[4]).append(optionsArray[5]);
 
     } else {
       //else empty color select field & append intialOption...
       //not really needed because I'm hiding color select field
-      $('select#color').empty().append(intialOption);
+      selectColor.empty().append(intialOption);
 
       //hide color select field
-      $('#colors-js-puns').hide();
+      colorContainer.hide();
     }
   }); //on change()
+
 
   //////////////////////////////
   //Register for Activities section of the form.
   //////////////////////////////
 
-  //Some events are at the same time as others. If the user selects a workshop, don't allow selection of a workshop at the same date and time -- you should disable the checkbox and visually indicate that the workshop in the competing time slot isn't available.
+  //define variables for this section
+  var text,
+      getDayDollar,
+      dayDollarArray,
+      money;
+
   //activities select field on change
   $('fieldset.activities input').on('change', function() {
     //text variable holds current option's closest label text
-    var text = $(this).closest('label').text();
-    //splits the string at — & uses pop to return the last
-    //portion of the string after —
-    var getDayDollar = text.split(' — ').pop();
-    //split returns an array with string before ',' as the first
+    text = $(this).closest('label').text();
+    //getDayDollar variable holds the split of the string at — & uses pop
+    //to return the last portion of the string after —
+    getDayDollar = text.split(' — ').pop();
+    //dayDollarArray variable holds the split at the ',' &
+    //returns an array with string before ',' as the first
     //part of the array & the string after ',' as the second
     //part of the array
-    var dayDollarArray = getDayDollar.split(',');
-    //create money variable
-    var money;
+    dayDollarArray = getDayDollar.split(',');
 
-    //if getDayDollar is equal to $200
+    //if getDayDollar is equal to $200, which equals the Main Conference
+    //checkbox
     if (getDayDollar === '$200') {
       //money equals getDayDollar and splits the 200 from the
-      //$ sign
-      money = getDayDollar.split('$');
+      //$ sign & the pop returns the last part of the array
+      money = getDayDollar.split('$').pop();
     } else {
       //else money equals second item in dayDollarArray & splits
-      //dollar amount from $ sign
-      money = dayDollarArray[1].split('$');
+      //dollar amount from $ sign & the pop returns the last part of
+      //the array
+      money = dayDollarArray[1].split('$').pop();
     }
 
-    //When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
+    //if current checkbox is checked do the following...
     if ($(this).is(':checked')) {
+      //target the parent label and it's siblings of the current checkbox
+      //& for each sibling do the following...
       $(this).parent('label').siblings().each(function() {
+        //if current sibling's text matches the text in the first part
+        //of dayDollarArray
         if ($(this).text().indexOf(dayDollarArray[0]) != -1) {
+          //change current sibling's css opacity to 0.2
           $(this).css('opacity', '0.2');
+          //change current sibling's input to disabled
           $(this).children('input').attr('disabled', true);
         }
       });
+
+    //else if current checkbox is not checked do the following...
     } else {
+      //target the parent label and it's siblings of the current checkbox
+      //& for each sibling do the following...
       $(this).parent('label').siblings().each(function() {
+        //if current sibling's text matches the text in the first part
+        //of dayDollarArray
         if ($(this).text().indexOf(dayDollarArray[0]) != -1) {
+          //change current sibling's css opacity to 1 to make it fully
+          //visible
           $(this).css('opacity', '1');
+          //change current sibling's input to enabled
           $(this).children('input').attr('disabled', false);
         }
       });
     }
 
     //As a user selects activities to register for, a running total is listed below the list of checkboxes. For example, if the user selects "Main conference" then Total: $200 should appear. If they add 1 workshop the total should change to Total: $300.
-    var amount = '<p id="total-dollars">Total: $' + money[1] + '</p>';
+    var amount = '<p id="total-dollars">Total: $' + money + '</p>';
     var initialAmount;
     var newAmount;
 
@@ -134,12 +167,12 @@ $(function() {
 
     } else if ($(this).is(':checked') && $('p#total-dollars').text().length !== 0){
       initialAmount = $('p#total-dollars').text().split('$');
-      newAmount = parseInt(initialAmount[1], 10) + parseInt(money[1], 10);
+      newAmount = parseInt(initialAmount[1], 10) + parseInt(money, 10);
       $('p#total-dollars').text('Total: $' + newAmount);
 
     } else if (!$(this).is(':checked')) {
       initialAmount = $('p#total-dollars').text().split('$');
-      newAmount = parseInt(initialAmount[1], 10) - parseInt(money[1], 10);
+      newAmount = parseInt(initialAmount[1], 10) - parseInt(money, 10);
       $('p#total-dollars').text('Total: $' + newAmount);
     }
 
@@ -296,7 +329,7 @@ $(function() {
       //if it equals 0 it's true else it's false
       //the amount that you would need to add to get
       //a multiple of 10
-      return (check % 10) == 0;
+      return (check % 10) === 0;
     }
 
     function validateZip(zip) {
