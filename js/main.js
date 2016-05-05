@@ -155,62 +155,109 @@ $(function() {
           $(this).children('input').attr('disabled', false);
         }
       });
-    }
+    } //if statement
 
-    //As a user selects activities to register for, a running total is listed below the list of checkboxes. For example, if the user selects "Main conference" then Total: $200 should appear. If they add 1 workshop the total should change to Total: $300.
-    var amount = '<p id="total-dollars">Total: $' + money + '</p>';
-    var initialAmount;
-    var newAmount;
 
-    if ($(this).is(':checked') && $('p#total-dollars').text().length === 0) {
+    //////////////////////////////
+    //Running total dollar amount.
+    //////////////////////////////
+
+    //define variables
+    var amount = '<p id="total-dollars">Total: $' + money + '</p>',
+        totalDollars = $('p#total-dollars'),
+        initialAmount,
+        newAmount;
+
+    //if the current checkbox is checked && total dollars paragraph's
+    //text length is equal to zero do the following...
+    if ($(this).is(':checked') && totalDollars.text().length === 0) {
+      //Places amount string after activities fieldset
       $('fieldset.activities').after(amount);
 
-    } else if ($(this).is(':checked') && $('p#total-dollars').text().length !== 0){
-      initialAmount = $('p#total-dollars').text().split('$');
+    //else if current checkbox is checked && total dollars paragraph's text
+    //is not equal to zero do the following...
+    } else if ($(this).is(':checked') && totalDollars.text().length !== 0) {
+      //initialAmount variable holds total dollars paragraph's text &
+      //splits it at '$'
+      initialAmount = totalDollars.text().split('$');
+      //newAmount variable holds the parsed initialAmount[1], which is the
+      //second part of the array & uses the standard 10 as second parameter
+      //parses money variable as well. The parsing makes it so both numbers
+      //can be added together
       newAmount = parseInt(initialAmount[1], 10) + parseInt(money, 10);
-      $('p#total-dollars').text('Total: $' + newAmount);
+      //changes total dollars paragraph's text to the new amount
+      totalDollars.text('Total: $' + newAmount);
 
+    //else if the current checkbox is not checked do the following...
     } else if (!$(this).is(':checked')) {
-      initialAmount = $('p#total-dollars').text().split('$');
+      //initialAmount holds total dollars paragraph's text & splits at '$'
+      initialAmount = totalDollars.text().split('$');
+      //newAmount does the same as above except it subtracts instead of adding
       newAmount = parseInt(initialAmount[1], 10) - parseInt(money, 10);
-      $('p#total-dollars').text('Total: $' + newAmount);
+      //new amount is placed in paragraph text
+      totalDollars.text('Total: $' + newAmount);
     }
 
-    if ($('p#total-dollars').text() === 'Total: $0') {
-      $('p#total-dollars').remove();
+    //if total dollars paragraph's text is equal to 'Total: $0'
+    if (totalDollars.text() === 'Total: $0') {
+      //remove it
+      totalDollars.remove();
     }
 
   }); //on change()
 
 
-  //Payment Info section of the form. Display payment sections based on chosen payment option
+  //////////////////////////////
+  //Payment Info section of the form.
+  //////////////////////////////
 
-  $('#credit-card').hide().next('div').hide().next('div').hide();
+  //define variables used in this section
+  var creditCardContainer = $('#credit-card');
 
-  //When a user selects the "Credit Card" payment option, display the #credit-card div, and hide the "Paypal" and "Bitcoin information.
-  //When a user selects the "PayPal" payment option, display the Paypal information, and hide the credit card information and the "Bitcoin" information.
-  //When a user selects the "Bitcoin" payment option, display the Bitcoin information, and hide the credit card information.
+  //create hideAllDivs function
+  function hideAllDivs() {
+    //hide all divs in payment section
+    creditCardContainer.hide().next('div').hide().next('div').hide();
+  }
+  //call hideAllDivs()
+  hideAllDivs();
+
+  //on page load makes #cvv input field have a maxlength of 3
   $('#cvv').attr('maxlength', '3');
 
+  //when the payment select field changes do the following...
   $('select#payment').on('change', function() {
+    //get value of current option selected
     var paymentOption = $(this).val();
 
+    //if current option equals 'credit card' do the following...
     if (paymentOption === 'credit card') {
-      $('#credit-card').show().next('div').hide().next('div').hide();
+      //show only the credit card div / input fields
+      creditCardContainer.show().next('div').hide().next('div').hide();
 
+    //if current option selected equals paypal
     } else if (paymentOption === 'paypal') {
-      $('#credit-card').hide().next('div').show().next('div').hide();
+      //show only the paypal div
+      creditCardContainer.hide().next('div').show().next('div').hide();
 
+    //if current option selected equals bitcoin
     } else if (paymentOption === 'bitcoin') {
-      $('#credit-card').hide().next('div').hide().next('div').show();
+      //show only the bitcoin div
+      creditCardContainer.hide().next('div').hide().next('div').show();
 
+    //if current option selected equals select_method
     } else if (paymentOption === 'select_method') {
-      $('#credit-card').hide().next('div').hide().next('div').hide();
+      //hide all divs
+      hideAllDivs();
     }
 
   });
 
 
+  //////////////////////////////
+  //Form Validation section of the form.
+  //////////////////////////////
+  
   //Form validation. Display error messages and don't let the user submit the form if any of these validation errors exist:
   //function to validate email input
   function validateEmail(email) {
