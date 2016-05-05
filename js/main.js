@@ -26,6 +26,8 @@ $(function() {
     if (otherOption === 'other') {
       //append the new input field
       fieldsetMain.append(otherInput);
+      //adds focus to newly appended input field
+      $('#other-title').focus();
 
     } else {
       //else find id of new input field and remove it
@@ -215,12 +217,14 @@ $(function() {
   var creditCardContainer = $('#credit-card');
 
   //create hideAllDivs function
-  function hideAllDivs() {
-    //hide all divs in payment section
-    creditCardContainer.hide().next('div').hide().next('div').hide();
+  function defaultView() {
+    //make credit card option default
+    $('select option[value="credit card"]').attr('selected', true);
+    //make credit card div the default view
+    creditCardContainer.show().next('div').hide().next('div').hide();
   }
-  //call hideAllDivs()
-  hideAllDivs();
+  //call defaultView()
+  defaultView();
 
   //on page load makes #cvv input field have a maxlength of 3
   $('#cvv').attr('maxlength', '3');
@@ -248,7 +252,7 @@ $(function() {
     //if current option selected equals select_method
     } else if (paymentOption === 'select_method') {
       //hide all divs
-      hideAllDivs();
+      defaultView();
     }
 
   });
