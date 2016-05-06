@@ -272,6 +272,108 @@ $(function() {
     return regex.test(email);
   }
 
+  //Extra Credit: Validate the credit card number so that it's a validly formatted credit card number. (see the Resources links for information on how to do this.)
+
+  //creates validateCreditCard function & passes in value
+  function validateCreditCard(value) {
+    // accept only digits, dashes or spaces
+    //[ start of a character set
+    //^ start of string
+    //will accept digits only \d
+    //will accept a - after the digits
+    //or a \s (space)
+    //will accept preceding expression multiple times +
+    if (/[\D-\s]+/.test(value)) {
+      //return false to prevent anything else in this
+      //function from occurring if test is false
+      return false;
+    }
+
+    //Luhn Algorithm:
+    //define variables
+    var check = 0;
+    var digits = 0;
+    var oddNumber = false;
+
+    //for loop defines n variable to equal value.length - 1
+    //the -1 reverses the order of value
+    //as long as n is greater than or equal to 0 keep looping
+    //n-- loops backwards
+    for(var n = value.length - 1; n >= 0; n--) {
+      //cDigit variable holds value and returns
+      //each digit in the string in reverse order
+      var eachDigit = value.charAt(n);
+      //nDigit variables holds the result of parsing cDigit
+      //specifying 10 as the radix (10 is the decimal numeral
+      //system commonly used by humans)
+      digits = parseInt(eachDigit, 10);
+
+      //if oddNumber is true do the following
+      if (oddNumber) {
+        //times each nDigit by 2 and checks to see if it
+        //is greater than 9
+        if ((digits *= 2) > 9) {
+          //minus 9 to every digit that is greater than 9
+          digits -= 9;
+        }
+      }
+
+      //add nDigit to check, which adds all the digits
+      //together
+      check += digits;
+      //changes even to true if it's false or false if
+      //it's true...this flips it so that it only does
+      //the previous on odd numbered digits
+      oddNumber = !oddNumber;
+    } //end of for loop
+
+    //check divided by 10 and return the remainder
+    //if it equals 0 it's true else it's false
+    //the amount that you would need to add to get
+    //a multiple of 10
+    return (check % 10) === 0;
+  }
+
+  //validates zip code
+  function validateZip(zip) {
+    //defines regular expression
+    //^ start of string
+    //must be a digit & cannot be more than 5
+    //(?: starts a grouping
+    //[-\s] matches a hyphen or a space
+    //must be more digits & cannot be more than 4
+    //everything between both '?' is optional
+    //$ end of string
+    var regex = /^\d{5}(?:[-\s]\d{4})?$/;
+    //returns true or false depending on if the string passes
+    //the regular expression test
+    return regex.test(zip);
+  }
+
+  //validates CVV
+  function validateCvv(cvv) {
+    //defines regular expression
+    //^ start of string
+    //must be digit & cannot be more than 3 digits
+    //$ end of string
+    var regex = /^\d{3}$/;
+    //returns true or false depending on if the string passes
+    //the regular expression test
+    return regex.test(cvv);
+  }
+
+  //creates addError function & passes in value
+  function addError(value) {
+    //add text color red
+    value.prev().css('color', 'red');
+  }
+
+  //creates removeError function & passes in value
+  function removeError(value) {
+    //add text color black
+    value.prev().css('color', '#000');
+  }
+
   //on sumbit of the form...
   $('form').on('submit', function(e) {
     //define variables
@@ -360,96 +462,6 @@ $(function() {
     //Credit Card Form Validation section of the form.
     //////////////////////////////
 
-    //Extra Credit: Validate the credit card number so that it's a validly formatted credit card number. (see the Resources links for information on how to do this.)
-
-    //creates validateCreditCard function & passes in value
-    function validateCreditCard(value) {
-      // accept only digits, dashes or spaces
-      //[ start of a character set
-      //^ start of string
-      //will accept digits only \d
-      //will accept a - after the digits
-      //or a \s (space)
-      //will accept preceding expression multiple times +
-      if (/[\D-\s]+/.test(value)) {
-        //return false to prevent anything else in this
-        //function from occurring if test is false
-        return false;
-      }
-
-      //Luhn Algorithm:
-      //define variables
-      var check = 0;
-      var digits = 0;
-      var oddNumber = false;
-
-      //for loop defines n variable to equal value.length - 1
-      //the -1 reverses the order of value
-      //as long as n is greater than or equal to 0 keep looping
-      //n-- loops backwards
-      for(var n = value.length - 1; n >= 0; n--) {
-        //cDigit variable holds value and returns
-        //each digit in the string in reverse order
-        var eachDigit = value.charAt(n);
-        //nDigit variables holds the result of parsing cDigit
-        //specifying 10 as the radix (10 is the decimal numeral
-        //system commonly used by humans)
-        digits = parseInt(eachDigit, 10);
-
-        //if oddNumber is true do the following
-        if (oddNumber) {
-          //times each nDigit by 2 and checks to see if it
-          //is greater than 9
-          if ((digits *= 2) > 9) {
-            //minus 9 to every digit that is greater than 9
-            digits -= 9;
-          }
-        }
-
-        //add nDigit to check, which adds all the digits
-        //together
-        check += digits;
-        //changes even to true if it's false or false if
-        //it's true...this flips it so that it only does
-        //the previous on odd numbered digits
-        oddNumber = !oddNumber;
-      } //end of for loop
-
-      //check divided by 10 and return the remainder
-      //if it equals 0 it's true else it's false
-      //the amount that you would need to add to get
-      //a multiple of 10
-      return (check % 10) === 0;
-    }
-
-    //validates zip code
-    function validateZip(zip) {
-      //defines regular expression
-      //^ start of string
-      //must be a digit & cannot be more than 5
-      //(?: starts a grouping
-      //[-\s] matches a hyphen or a space
-      //must be more digits & cannot be more than 4
-      //everything between both '?' is optional
-      //$ end of string
-      var regex = /^\d{5}(?:[-\s]\d{4})?$/;
-      //returns true or false depending on if the string passes
-      //the regular expression test
-      return regex.test(zip);
-    }
-
-    //validates CVV
-    function validateCvv(cvv) {
-      //defines regular expression
-      //^ start of string
-      //must be digit & cannot be more than 3 digits
-      //$ end of string
-      var regex = /^\d{3}$/;
-      //returns true or false depending on if the string passes
-      //the regular expression test
-      return regex.test(cvv);
-    }
-
     //define variables
     var creditCardInput = $('#cc-num'),
         creditCardValue = creditCardInput.val(),
@@ -457,18 +469,6 @@ $(function() {
         zipValue = zipInput.val(),
         cvvInput = $('#cvv'),
         cvvValue = cvvInput.val();
-
-    //creates addError function & passes in value
-    function addError(value) {
-      //add text color red
-      value.prev().css('color', 'red');
-    }
-
-    //creates removeError function & passes in value
-    function removeError(value) {
-      //add text color black
-      value.prev().css('color', '#000');
-    }
 
     //if payment select option equals 'credit card'
     if ($('select#payment').val() === 'credit card') {
@@ -509,6 +509,62 @@ $(function() {
       }
     }
 
+  }); //on submit ()
+
+
+  ////////////////////////
+  //Removes Error on Keyup
+  ////////////////////////
+
+  //removes error on keyup...this is all the same code with comments that
+  //is found above in the submit function
+  $('input#name').on('keyup', function() {
+    if ($(this).val() !== '')  {
+      $(this).prev().css('color', '#000').find('span').removeClass('visible');
+    }
+  });
+
+  //removes error on keyup...this is all the same code with comments that
+  //is found above in the submit function
+  $('input#mail').on('keyup', function() {
+    if ($(this).val() !== '' && validateEmail($(this).val()) === true) {
+      $(this).prev().css('color', '#000').find('span').removeClass('visible');
+    }
+  });
+
+  //removes error on keyup...this is all the same code with comments that
+  //is found above in the submit function
+  $('select#design').on('change', function() {
+    if ($(this).val() !== 'Select Theme') {
+      $('fieldset.shirt').find('span').removeClass('visible-block');
+    }
+  });
+
+  //removes error on keyup...this is all the same code with comments that
+  //is found above in the submit function
+  $('#cc-num').on('keyup', function() {
+    if ($(this).val() !== '' && validateCreditCard($(this).val()) === true) {
+      //remove visible error for user
+      removeError($(this));
+    }
+  });
+
+  //removes error on keyup...this is all the same code with comments that
+  //is found above in the submit function
+  $('#zip').on('keyup', function() {
+    if ($(this).val() !== '' && validateZip($(this).val()) === true) {
+      //remove visible error for user
+      removeError($(this));
+    }
+  });
+
+  //removes error on keyup...this is all the same code with comments that
+  //is found above in the submit function
+  $('#cvv').on('keyup', function() {
+    if ($(this).val() !== '' && validateCvv($(this).val()) === true) {
+      //remove visible error for user
+      removeError($(this));
+    }
   });
 
 });
