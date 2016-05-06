@@ -384,17 +384,17 @@ $(function() {
       var oddNumber = false;
 
       //for loop defines n variable to equal value.length - 1
-      //the -1 drops the last digit
+      //the -1 reverses the order of value
       //as long as n is greater than or equal to 0 keep looping
       //n-- loops backwards
       for(var n = value.length - 1; n >= 0; n--) {
         //cDigit variable holds value and returns
         //each digit in the string in reverse order
-        var reverseDigits = value.charAt(n);
+        var eachDigit = value.charAt(n);
         //nDigit variables holds the result of parsing cDigit
         //specifying 10 as the radix (10 is the decimal numeral
         //system commonly used by humans)
-        digits = parseInt(reverseDigits, 10);
+        digits = parseInt(eachDigit, 10);
 
         //if oddNumber is true do the following
         if (oddNumber) {
