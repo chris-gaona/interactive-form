@@ -458,6 +458,18 @@ $(function() {
         cvvInput = $('#cvv'),
         cvvValue = cvvInput.val();
 
+    //creates addError function & passes in value
+    function addError(value) {
+      //add text color red
+      value.prev().css('color', 'red');
+    }
+
+    //creates removeError function & passes in value
+    function removeError(value) {
+      //add text color black
+      value.prev().css('color', '#000');
+    }
+
     //if payment select option equals 'credit card'
     if ($('select#payment').val() === 'credit card') {
       //if creditCardValue is empty or validateCreditCard returns false
@@ -465,11 +477,11 @@ $(function() {
         e.preventDefault();
 
         //add visible error for user
-        creditCardInput.prev().css('color', 'red');
+        addError(creditCardInput);
 
       } else {
         //remove visible error for user
-        creditCardInput.prev().css('color', '#000');
+        removeError(creditCardInput);
       }
 
       //if zipValue is empty or validateZip return false
@@ -477,11 +489,11 @@ $(function() {
         e.preventDefault();
 
         //add visible error for user
-        zipInput.prev().css('color', 'red');
+        addError(zipInput);
 
       } else {
         //remove visible error for user
-        zipInput.prev().css('color', '#000');
+        removeError(zipInput);
       }
 
       //if cvvValue is empty or validateCvv return false
@@ -489,11 +501,11 @@ $(function() {
         e.preventDefault();
 
         //add visible error for user
-        cvvInput.prev().css('color', 'red');
+        addError(cvvInput);
 
       } else {
         //remove visible error for user
-        cvvInput.prev().css('color', '#000');
+        removeError(cvvInput);
       }
     }
 
