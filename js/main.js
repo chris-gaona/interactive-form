@@ -387,7 +387,7 @@ $(function() {
       e.preventDefault();
 
       //adds visible error to user
-      nameInput.prev().css('color', 'red').find('span').addClass('visible');
+      nameInput.prev().css('color', 'red').find('span').addClass('visible').html('(Please enter your name)');
 
     } else {
       //adds visible error to user
@@ -401,7 +401,7 @@ $(function() {
       e.preventDefault();
 
       //adds visible error to user
-      emailInput.prev().css('color', 'red').find('span').addClass('visible');
+      emailInput.prev().css('color', 'red').find('span').addClass('visible').html('(Please enter a valid email address)');
 
     } else {
       //removes visible error to user
@@ -413,7 +413,7 @@ $(function() {
       e.preventDefault();
 
       //adds visible error to user
-      $('fieldset.shirt').find('span').addClass('visible-block');
+      $('fieldset.shirt').find('span.error').addClass('visible-block').html('Don\'t forget to pick a T-shirt');
 
     } else {
       //removes visible error to user
@@ -442,7 +442,7 @@ $(function() {
       e.preventDefault();
 
       //add error message for user
-      $('fieldset.activities').find('span').addClass('visible-block');
+      $('fieldset.activities').find('span.error').addClass('visible-block').html('Please select an activity');
     }
 
     //if no payment method is selected
