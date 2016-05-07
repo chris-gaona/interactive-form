@@ -127,36 +127,32 @@ $(function() {
       money = dayDollarArray[1].split('$').pop();
     }
 
-    //if current checkbox is checked do the following...
-    if ($(this).is(':checked')) {
+    var $input = $(this);
+
+    function checkForDupes(opacityValue, booleanValue) {
       //target the parent label and it's siblings of the current checkbox
       //& for each sibling do the following...
-      $(this).parent('label').siblings().each(function() {
+      $input.parent('label').siblings().each(function() {
         //if current sibling's text matches the text in the first part
         //of dayDollarArray
         if ($(this).text().indexOf(dayDollarArray[0]) != -1) {
           //change current sibling's css opacity to 0.2
-          $(this).css('opacity', '0.2');
+          $(this).css('opacity', opacityValue);
           //change current sibling's input to disabled
-          $(this).children('input').attr('disabled', true);
+          $(this).children('input').attr('disabled', booleanValue);
         }
       });
+    }
+
+    //if current checkbox is checked do the following...
+    if ($(this).is(':checked')) {
+      //calls checkForDupes function & passes in values
+      checkForDupes('0.2', true);
 
     //else if current checkbox is not checked do the following...
     } else {
-      //target the parent label and it's siblings of the current checkbox
-      //& for each sibling do the following...
-      $(this).parent('label').siblings().each(function() {
-        //if current sibling's text matches the text in the first part
-        //of dayDollarArray
-        if ($(this).text().indexOf(dayDollarArray[0]) != -1) {
-          //change current sibling's css opacity to 1 to make it fully
-          //visible
-          $(this).css('opacity', '1');
-          //change current sibling's input to enabled
-          $(this).children('input').attr('disabled', false);
-        }
-      });
+      //calls checkForDupes function & passes in values
+      checkForDupes('1', false);
     } //if statement
 
 
@@ -417,7 +413,7 @@ $(function() {
 
     } else {
       //removes visible error to user
-      $('fieldset.shirt').find('span').removeClass('visible-block');
+      $('fieldset.shirt').find('span.error').removeClass('visible-block');
     }
 
     //validates that at least one activity is checked
@@ -435,7 +431,7 @@ $(function() {
     //if one checkbox is checked
     if (oneIsChecked === true) {
       //remove error message & allow user to submit
-      $('fieldset.activities').find('span').removeClass('visible-block');
+      $('fieldset.activities').find('span.error').removeClass('visible-block');
 
     } else {
       //prevent user from submitting the form
