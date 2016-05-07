@@ -248,7 +248,7 @@ $(function() {
     //if current option selected equals select_method
     } else if (paymentOption === 'select_method') {
       //hide all divs
-      defaultView();
+      creditCardContainer.hide().next('div').hide().next('div').hide();
     }
 
   });
@@ -446,11 +446,11 @@ $(function() {
       e.preventDefault();
 
       //add error message for user
-      $('select#payment').prev().prev().children().addClass('visible-block');
+      $('select#payment').closest('fieldset').children('legend').children('span').addClass('visible-block').html('Please choose a payment option');
 
     } else {
       //remove error message for user
-      $('select#payment').prev().prev().children().removeClass('visible-block');
+      $('select#payment').closest('fieldset').children('legend').children('span').removeClass('visible-block');
     }
 
 
