@@ -359,13 +359,14 @@ $(function() {
   }
 
   //creates addError function & passes in value
-  function addError(value) {
+  function addCreditCardError(value) {
     //add text color red
     value.prev().css('color', 'red');
+    $('label[for="name"]').find('span').addClass('visible').html('(Please enter your name)');
   }
 
   //creates removeError function & passes in value
-  function removeError(value) {
+  function removeCreditCardError(value) {
     //add text color black
     value.prev().css('color', '#000');
   }
@@ -383,11 +384,11 @@ $(function() {
       e.preventDefault();
 
       //adds visible error to user
-      nameInput.prev().css('color', 'red').find('span').addClass('visible').html('(Please enter your name)');
+      $('label[for="name"]').find('span').addClass('visible').html('(Please enter your name)');
 
     } else {
       //adds visible error to user
-      nameInput.prev().css('color', '#000').find('span').removeClass('visible');
+      $('label[for="name"]').find('span').removeClass('visible');
     }
 
     //Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example. You'll need to use a regular expression to get this requirement. See the list of Resources for links to learn about regular expressions.
@@ -397,11 +398,11 @@ $(function() {
       e.preventDefault();
 
       //adds visible error to user
-      emailInput.prev().css('color', 'red').find('span').addClass('visible').html('(Please enter a valid email address)');
+      $('label[for="mail"]').find('span').addClass('visible').html('(Please enter a valid email address)');
 
     } else {
       //removes visible error to user
-      emailInput.prev().css('color', '#000').find('span').removeClass('visible');
+      $('label[for="mail"]').find('span').removeClass('visible');
     }
 
     //makes sure a shirt is picked
@@ -473,11 +474,11 @@ $(function() {
         e.preventDefault();
 
         //add visible error for user
-        addError(creditCardInput);
+        addCreditCardError(creditCardInput);
 
       } else {
         //remove visible error for user
-        removeError(creditCardInput);
+        removeCreditCardError(creditCardInput);
       }
 
       //if zipValue is empty or validateZip return false
@@ -485,11 +486,11 @@ $(function() {
         e.preventDefault();
 
         //add visible error for user
-        addError(zipInput);
+        addCreditCardError(zipInput);
 
       } else {
         //remove visible error for user
-        removeError(zipInput);
+        removeCreditCardError(zipInput);
       }
 
       //if cvvValue is empty or validateCvv return false
@@ -497,11 +498,11 @@ $(function() {
         e.preventDefault();
 
         //add visible error for user
-        addError(cvvInput);
+        addCreditCardError(cvvInput);
 
       } else {
         //remove visible error for user
-        removeError(cvvInput);
+        removeCreditCardError(cvvInput);
       }
     }
 
