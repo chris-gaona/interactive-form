@@ -358,6 +358,14 @@ $(function() {
     return regex.test(cvv);
   }
 
+  function addError(element, classValue, string) {
+    element.find('span.error').addClass(classValue).html(string);
+  }
+
+  function removeError(element, classValue) {
+    element.find('span.error').removeClass(classValue);
+  }
+
   //creates addError function & passes in value
   function addCreditCardError(value) {
     //add text color red
@@ -384,11 +392,11 @@ $(function() {
       e.preventDefault();
 
       //adds visible error to user
-      $('label[for="name"]').find('span').addClass('visible').html('(Please enter your name)');
+      addError($('label[for="name"]'), 'visible', '(Please enter your name)');
 
     } else {
       //adds visible error to user
-      $('label[for="name"]').find('span').removeClass('visible');
+      removeError($('label[for="name"]'), 'visible');
     }
 
     //Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example. You'll need to use a regular expression to get this requirement. See the list of Resources for links to learn about regular expressions.
@@ -398,11 +406,11 @@ $(function() {
       e.preventDefault();
 
       //adds visible error to user
-      $('label[for="mail"]').find('span').addClass('visible').html('(Please enter a valid email address)');
+      addError($('label[for="mail"]'), 'visible', '(Please enter a valid email address)');
 
     } else {
       //removes visible error to user
-      $('label[for="mail"]').find('span').removeClass('visible');
+      removeError($('label[for="mail"]'), 'visible');
     }
 
     //makes sure a shirt is picked
@@ -410,11 +418,11 @@ $(function() {
       e.preventDefault();
 
       //adds visible error to user
-      $('fieldset.shirt').find('span.error').addClass('visible-block').html('Don\'t forget to pick a T-shirt');
+      addError($('fieldset.shirt'), 'visible-block', 'Don\'t forget to pick a T-shirt')
 
     } else {
       //removes visible error to user
-      $('fieldset.shirt').find('span.error').removeClass('visible-block');
+      removeError($('fieldset.shirt'), 'visible-block');
     }
 
     //validates that at least one activity is checked
@@ -432,14 +440,14 @@ $(function() {
     //if one checkbox is checked
     if (oneIsChecked === true) {
       //remove error message & allow user to submit
-      $('fieldset.activities').find('span.error').removeClass('visible-block');
+      removeError($('fieldset.activities'), 'visible-block');
 
     } else {
       //prevent user from submitting the form
       e.preventDefault();
 
       //add error message for user
-      $('fieldset.activities').find('span.error').addClass('visible-block').html('Please select an activity');
+      addError($('fieldset.activities'), 'visible-block', 'Please select an activity');
     }
 
     //if no payment method is selected
@@ -537,31 +545,24 @@ $(function() {
     }
   });
 
-  //removes error on keyup...this is all the same code with comments that
-  //is found above in the submit function
-  $('#cc-num').on('keyup', function() {
-    if ($(this).val() !== '' && validateCreditCard($(this).val()) === true) {
-      //remove visible error for user
-      removeError($(this));
-    }
-  });
+  function removeErrorOnKeyup(element, validate) {
+    //removes error on keyup...this is all the same code with comments that
+    //is found above in the submit function
+    element.on('keyup', function() {
+      if ($(this).val() !== '' && validate($(this).val()) === true) {
+        //remove visible error for user
+        removeCreditCardError($(this));
+      }
+    });
+  }
 
-  //removes error on keyup...this is all the same code with comments that
-  //is found above in the submit function
-  $('#zip').on('keyup', function() {
-    if ($(this).val() !== '' && validateZip($(this).val()) === true) {
-      //remove visible error for user
-      removeError($(this));
-    }
-  });
+  //removes error on keyup for credit card number input
+  removeErrorOnKeyup($('#cc-num'), validateCreditCard);
 
-  //removes error on keyup...this is all the same code with comments that
-  //is found above in the submit function
-  $('#cvv').on('keyup', function() {
-    if ($(this).val() !== '' && validateCvv($(this).val()) === true) {
-      //remove visible error for user
-      removeError($(this));
-    }
-  });
+  //removes error on keyup for zip code input
+  removeErrorOnKeyup($('#zip'), validateZip);
+
+  //removes error on keyup for cvv input
+  removeErrorOnKeyup($('#cvv'), validateCvv);
 
 });
