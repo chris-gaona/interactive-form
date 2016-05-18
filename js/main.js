@@ -370,7 +370,7 @@ $(function() {
   function addCreditCardError(value) {
     //add text color red
     value.prev().css('color', 'red');
-    $('label[for="name"]').find('span').addClass('visible').html('(Please enter your name)');
+    // $('label[for="name"]').find('span').addClass('visible').html('(Please enter your name)');
   }
 
   //creates removeError function & passes in value
@@ -379,24 +379,32 @@ $(function() {
     value.prev().css('color', '#000');
   }
 
+  $('button').after('<span class="submit-error"></span>');
+
   //on sumbit of the form...
   $('form').on('submit', function(e) {
+
     //define variables
     var nameInput = $('input#name'),
+        nameInputValue = nameInput.val(),
         emailInput = $('input#mail'),
-        emailInputValue = $('input#mail').val();
+        emailInputValue = emailInput.val(),
+        submitError = $('.submit-error');
 
     //name field can't be empty
-    if (nameInput.val() === '') {
+    if (nameInputValue === '') {
       //prevents default behavior of submit button...used multiple times below
       e.preventDefault();
+      submitError.html('Please complete all fields');
 
       //adds visible error to user
       addError($('label[for="name"]'), 'visible', '(Please enter your name)');
 
     } else {
-      //adds visible error to user
-      removeError($('label[for="name"]'), 'visible');
+      console.log('no error');
+      //removes error to user
+      $('label[for="name"]').find('span.error').removeClass('visible');
+      // removeError($('label[for="name"]'), 'visible');
     }
 
     //Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example. You'll need to use a regular expression to get this requirement. See the list of Resources for links to learn about regular expressions.
@@ -404,6 +412,7 @@ $(function() {
     //if email input is empty or validateEmail function returns false
     if (emailInputValue === '' || validateEmail(emailInputValue) === false) {
       e.preventDefault();
+      submitError.html('Please complete all fields');
 
       //adds visible error to user
       addError($('label[for="mail"]'), 'visible', '(Please enter a valid email address)');
@@ -416,6 +425,7 @@ $(function() {
     //makes sure a shirt is picked
     if ($('select#design').val() === 'Select Theme') {
       e.preventDefault();
+      submitError.html('Please complete all fields');
 
       //adds visible error to user
       addError($('fieldset.shirt'), 'visible-block', 'Don\'t forget to pick a T-shirt')
@@ -445,6 +455,7 @@ $(function() {
     } else {
       //prevent user from submitting the form
       e.preventDefault();
+      submitError.html('Please complete all fields');
 
       //add error message for user
       addError($('fieldset.activities'), 'visible-block', 'Please select an activity');
@@ -453,6 +464,7 @@ $(function() {
     //if no payment method is selected
     if ($('select#payment').val() === 'select_method') {
       e.preventDefault();
+      submitError.html('Please complete all fields');
 
       //add error message for user
       $('select#payment').closest('fieldset').children('legend').children('span').addClass('visible-block').html('Please choose a payment option');
@@ -480,6 +492,7 @@ $(function() {
       //if creditCardValue is empty or validateCreditCard returns false
       if (creditCardValue === '' || validateCreditCard(creditCardValue) === false) {
         e.preventDefault();
+        submitError.html('Please complete all fields');
 
         //add visible error for user
         addCreditCardError(creditCardInput);
@@ -492,6 +505,7 @@ $(function() {
       //if zipValue is empty or validateZip return false
       if (zipValue === '' || validateZip(zipValue) === false) {
         e.preventDefault();
+        submitError.html('Please complete all fields');
 
         //add visible error for user
         addCreditCardError(zipInput);
@@ -504,6 +518,7 @@ $(function() {
       //if cvvValue is empty or validateCvv return false
       if (cvvValue === '' || validateCvv(cvvValue) === false) {
         e.preventDefault();
+        submitError.html('Please complete all fields');
 
         //add visible error for user
         addCreditCardError(cvvInput);

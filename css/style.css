@@ -160,6 +160,11 @@ button:hover {
   margin-top: 5px;
 }
 
+.submit-error {
+  color: red;
+  margin-left: 20px;
+}
+
 /* =================================
   Page Styles
 ==================================== */
