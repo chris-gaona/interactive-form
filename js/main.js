@@ -13,6 +13,7 @@ $(function() {
   var otherInput,
       otherOption,
       fieldsetMain = $('fieldset#main');
+
   //otherInput variable holds the input for when other is
   //selected
   otherInput = '<input type="text" id="other-title" placeholder="Your Title">';
@@ -53,7 +54,8 @@ $(function() {
   //it to an array
   optionsArray = $('#color option').toArray();
 
-  //intialOption variable holds the intial option...not really //needed anymore since I'm hiding the colors select field
+  //intialOption variable holds the intial option...not really
+  //needed anymore since I'm hiding the colors select field
   //on page load
   intialOption = '<option><-- Please select a T-shirt theme</option>';
   //on page load empty the colors select field & append
@@ -212,25 +214,22 @@ $(function() {
   //define variables used in this section
   var creditCardContainer = $('#credit-card');
 
-  //create hideAllDivs function
+  //create hideAllDivs function & make credit card default view
   function defaultView() {
-    //make credit card option default
     $('select option[value="credit card"]').attr('selected', true);
-    //make credit card div the default view
     creditCardContainer.show().next('div').hide().next('div').hide();
   }
-  //call defaultView()
   defaultView();
 
-  //on page load makes #cvv input field have a maxlength of 3
+  //makes #cvv input field have a maxlength of 3
   $('#cvv').attr('maxlength', '3');
 
-  //when the payment select field changes do the following...
+  //when the payment select field changes
   $('select#payment').on('change', function() {
     //get value of current option selected
     var paymentOption = $(this).val();
 
-    //if current option equals 'credit card' do the following...
+    //if current option equals 'credit card'
     if (paymentOption === 'credit card') {
       //show only the credit card div / input fields
       creditCardContainer.show().next('div').hide().next('div').hide();
@@ -370,7 +369,6 @@ $(function() {
   function addCreditCardError(value) {
     //add text color red
     value.prev().css('color', 'red');
-    // $('label[for="name"]').find('span').addClass('visible').html('(Please enter your name)');
   }
 
   //creates removeError function & passes in value
@@ -401,10 +399,8 @@ $(function() {
       addError($('label[for="name"]'), 'visible', '(Please enter your name)');
 
     } else {
-      console.log('no error');
       //removes error to user
       $('label[for="name"]').find('span.error').removeClass('visible');
-      // removeError($('label[for="name"]'), 'visible');
     }
 
     //Email field must be a validly formatted e-mail address (you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example. You'll need to use a regular expression to get this requirement. See the list of Resources for links to learn about regular expressions.
@@ -552,7 +548,7 @@ $(function() {
     }
   });
 
-  //removes error on keyup...this is all the same code with comments that
+  //removes error on change...this is all the same code with comments that
   //is found above in the submit function
   $('select#design').on('change', function() {
     if ($(this).val() !== 'Select Theme') {
