@@ -424,7 +424,7 @@ $(function() {
       submitError.html('Please complete all fields');
 
       //adds visible error to user
-      addError($('fieldset.shirt'), 'visible-block', 'Don\'t forget to pick a T-shirt')
+      addError($('fieldset.shirt'), 'visible-block', 'Don\'t forget to pick a T-shirt');
 
     } else {
       //removes visible error to user
