@@ -16,7 +16,8 @@ $(function() {
 
   //otherInput variable holds the input for when other is
   //selected
-  otherInput = '<input type="text" id="other-title" placeholder="Your Title">';
+  otherInput = $('#other-title');
+  otherInput.hide();
 
   //job role select on change
   $('select#title').on('change', function() {
@@ -25,14 +26,14 @@ $(function() {
 
     //if otherOption equals other do the following...
     if (otherOption === 'other') {
-      //append the new input field
-      fieldsetMain.append(otherInput);
+      //show the new input field
+      otherInput.show();
       //adds focus to newly appended input field
       $('#other-title').focus();
 
     } else {
-      //else find id of new input field and remove it
-      fieldsetMain.find('#other-title').remove();
+      //else hide new input field and remove it
+      otherInput.hide();
     }
   }); //on change()
 
